@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kasra NFT Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@farcaster/frame-sdk/dist/index.min.js"></script>
+    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://i.seadn.io/gae/2cLE8IkDQG0iGaedeE4KvY4zIPvDPEw47oyOhR6uzIAudFMWKP0i-c0trrIBFI0s8veuzPICebd0_S-8DDulZvgUbgwLC3n8zpt6Fw?auto=format&dpr=1&w=384","button":{"title":"Play Game","action":{"type":"launch_frame","name":"Bounce Game","url":"https://kasra-nft-test.kasra.codes","splashImageUrl":"https://i.seadn.io/gae/2cLE8IkDQG0iGaedeE4KvY4zIPvDPEw47oyOhR6uzIAudFMWKP0i-c0trrIBFI0s8veuzPICebd0_S-8DDulZvgUbgwLC3n8zpt6Fw?auto=format&dpr=1&w=384","splashBackgroundColor":"#D9D9D6"}}}' />
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .mint-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .mint-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <button class="mint-button" id="mintButton">Mint</button>
+    <script src="main.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          console.log('DOMContentLoaded');
+            // Wait for Frame SDK initialization
+            await new Promise((resolve, reject) => {
+              const checkSDK = () => {
+                  if (window.frame?.sdk) {
+                      resolve();
+                  } else {
+                      setTimeout(checkSDK, 100);
+                  }
+              };
+              setTimeout(() => reject(new Error('Frame SDK initialization timeout')), 10000);
+              checkSDK();
+            });
+
+            console.log('Frame SDK initialized');
+
+            // Initialize Frame SDK
+            if (window.frame?.sdk?.actions?.ready) {
+              await window.frame.sdk.actions.ready();
+              console.log('Frame SDK ready');
+            }
+
+            console.log('Frame SDK ready');
+
+            // Wait for user context
+            const user = await new Promise((resolve, reject) => {
+              const checkUser = () => {
+                if (window.frame?.sdk?.context?.user) {
+                    resolve(window.frame.sdk.context.user);
+                } else {
+                    setTimeout(checkUser, 100);
+                }
+              };
+              setTimeout(() => reject(new Error('User context timeout')), 10000);
+              checkUser();
+            });
+
+            console.log('User context loaded');
+
+            // Store user info and update panel
+            window.userFid = user.fid;
+            window.userName = user.username || 'Anonymous';
+            console.log('User Info:', { fid: window.userFid, username: window.userName });
+
+            // Wait for provider to be available
+            await new Promise(resolve => {
+              const checkProvider = () => {
+                if (window.frame.sdk.wallet.ethProvider) {
+                    resolve();
+                } else {
+                    setTimeout(checkProvider, 100);
+                }
+              };
+              checkProvider();
+            });
+
+            console.log('Provider loaded');
+
+            // Switch to Base
+            try {
+              await window.frame.sdk.wallet.ethProvider.request({
+                  method: 'wallet_switchEthereumChain',
+                  params: [{ chainId: '0x2105' }] // Base mainnet chainId
+              });
+              console.log('Successfully switched to Base');
+            } catch (switchError) {
+              return
+            }
+
+            console.log('Successfully switched to Base');
+
+            // add an event listener for the mint button
+            document.getElementById('mintButton').addEventListener('click', async () => {
+              console.log('Mint button clicked');
+
+              const contractAddress = '0xc206ec89796Ef809Ca2232F63C5fc8A11a080a7E';
+              
+              try {
+                // Get the user's wallet address
+                const accounts = await window.frame.sdk.wallet.ethProvider.request({
+                  method: 'eth_requestAccounts'
+                });
+                const walletAddress = accounts[0];
+
+                // Create the mint function signature
+                const mintFunctionSignature = '0x1249c58b'; // This is keccak256('mint()')
+
+                // Send the transaction
+                const txHash = await window.frame.sdk.wallet.ethProvider.request({
+                  method: 'eth_sendTransaction',
+                  params: [{
+                    from: walletAddress,
+                    to: contractAddress,
+                    data: mintFunctionSignature
+                  }]
+                });
+
+                console.log('Mint transaction sent:', txHash);
+              } catch (error) {
+                console.error('Error minting:', error);
+              }
+            });
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    </script>
+</body>
+</html>

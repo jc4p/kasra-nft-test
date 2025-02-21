@@ -33,7 +33,10 @@
     </style>
 </head>
 <body>
-    <button class="mint-button" id="mintButton">Mint</button>
+    <div style="text-align: center;">
+        <button class="mint-button" id="mintButton">Mint</button>
+        <div id="statusDisplay" style="margin-top: 20px; padding: 10px; border-radius: 5px; display: none;"></div>
+    </div>
     <script src="main.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', async () => {
@@ -112,6 +115,9 @@
             // add an event listener for the mint button
             document.getElementById('mintButton').addEventListener('click', async () => {
               console.log('Mint button clicked');
+              
+              const statusDisplay = document.getElementById('statusDisplay');
+              statusDisplay.style.display = 'none';
 
               const contractAddress = '0xc206ec89796Ef809Ca2232F63C5fc8A11a080a7E';
               
@@ -136,8 +142,16 @@
                 });
 
                 console.log('Mint transaction sent:', txHash);
+                statusDisplay.style.backgroundColor = '#4CAF50';
+                statusDisplay.style.color = 'white';
+                statusDisplay.innerHTML = `Transaction sent! Hash: <a href="https://basescan.org/tx/${txHash}" target="_blank" style="color: white;">${txHash.slice(0,10)}...${txHash.slice(-8)}</a>`;
+                statusDisplay.style.display = 'block';
               } catch (error) {
                 console.error('Error minting:', error);
+                statusDisplay.style.backgroundColor = '#f44336';
+                statusDisplay.style.color = 'white';
+                statusDisplay.textContent = `Error: ${error.message || 'Failed to mint'}`;
+                statusDisplay.style.display = 'block';
               }
             });
         } catch (error) {

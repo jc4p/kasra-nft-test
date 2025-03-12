@@ -112,17 +112,17 @@
             console.log('Provider loaded');
 
             // Switch to Base
-            try {
-              await window.frame.sdk.wallet.ethProvider.request({
-                  method: 'wallet_switchEthereumChain',
-                  params: [{ chainId: '0x2105' }] // Base mainnet chainId
-              });
-              console.log('Successfully switched to Base');
-            } catch (switchError) {
-              return
-            }
+            // try {
+            //   await window.frame.sdk.wallet.ethProvider.request({
+            //       method: 'wallet_switchEthereumChain',
+            //       params: [{ chainId: '0x2105' }] // Base mainnet chainId
+            //   });
+            //   console.log('Successfully switched to Base');
+            // } catch (switchError) {
+            //   return
+            // }
 
-            console.log('Successfully switched to Base');
+            // console.log('Successfully switched to Base');
 
             document.getElementById('shareButton').addEventListener('click', async () => {
               const shareText = `I've been classified as a $FLUX Drifter in the Spectral Lab! Discover your research alignment below.`;

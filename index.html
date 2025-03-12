@@ -30,14 +30,26 @@
         .mint-button:hover {
             background-color: #45a049;
         }
+
+        .share-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+
+        .share-button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
     <div style="text-align: center;">
         <button class="mint-button" id="mintButton">Mint</button>
+        <button class="share-button" id="shareButton">Share</button>
         <div id="statusDisplay" style="margin-top: 20px; padding: 10px; border-radius: 5px; display: none;"></div>
     </div>
-    <script src="main.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', async () => {
         try {
@@ -111,6 +123,17 @@
             }
 
             console.log('Successfully switched to Base');
+
+            document.getElementById('shareButton').addEventListener('click', async () => {
+              const shareText = `I've been classified as a $FLUX Drifter in the Spectral Lab! Discover your research alignment below.`;
+
+              const encodedText = encodeURI(shareText);
+              const encodedAppUrl = encodeURIComponent(`https://spec0222.vercel.app/?fid=977233`);
+
+              const shareUrl = `https://warpcast.com/~/compose?text=${encodedText}&embeds[]=${encodedAppUrl}`;
+
+              window.frame.sdk.actions.openUrl(shareUrl);
+            });
 
             // add an event listener for the mint button
             document.getElementById('mintButton').addEventListener('click', async () => {

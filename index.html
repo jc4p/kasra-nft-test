@@ -46,137 +46,143 @@
 </head>
 <body>
     <div style="text-align: center;">
+      <div style="display: flex; flex-direction: column; align-items: center;">
         <button class="mint-button" id="mintButton">Mint</button>
-        <button class="share-button" id="shareButton">Share</button>
-        <div id="statusDisplay" style="margin-top: 20px; padding: 10px; border-radius: 5px; display: none;"></div>
+        <button class="login-button" id="loginButton">Login</button>
+        <div class='debug-container'></div>
+      </div>
+      <div id="statusDisplay" style="margin-top: 20px; padding: 10px; border-radius: 5px; display: none;"></div>
     </div>
     <script>
       document.addEventListener('DOMContentLoaded', async () => {
         try {
+          const debugContainer = document.querySelector('.debug-container');
           console.log('DOMContentLoaded');
-            // Wait for Frame SDK initialization
-            await new Promise((resolve, reject) => {
-              const checkSDK = () => {
-                  if (window.frame?.sdk) {
-                      resolve();
-                  } else {
-                      setTimeout(checkSDK, 100);
-                  }
-              };
-              setTimeout(() => reject(new Error('Frame SDK initialization timeout')), 10000);
-              checkSDK();
-            });
-
-            console.log('Frame SDK initialized');
-
-            // Initialize Frame SDK
-            if (window.frame?.sdk?.actions?.ready) {
-              await window.frame.sdk.actions.ready();
-              console.log('Frame SDK ready');
-            }
-
-            console.log('Frame SDK ready');
-
-            // Wait for user context
-            const user = await new Promise((resolve, reject) => {
-              const checkUser = () => {
-                if (window.frame?.sdk?.context?.user) {
-                    resolve(window.frame.sdk.context.user);
-                } else {
-                    setTimeout(checkUser, 100);
-                }
-              };
-              setTimeout(() => reject(new Error('User context timeout')), 10000);
-              checkUser();
-            });
-
-            console.log('User context loaded');
-
-            // Store user info and update panel
-            window.userFid = user.fid;
-            window.userName = user.username || 'Anonymous';
-            console.log('User Info:', { fid: window.userFid, username: window.userName });
-
-            // Wait for provider to be available
-            await new Promise(resolve => {
-              const checkProvider = () => {
-                if (window.frame.sdk.wallet.ethProvider) {
+          debugContainer.innerHTML = debugContainer.innerHTML + `<p>DOMContentLoaded</p>`;
+          // Wait for Frame SDK initialization
+          await new Promise((resolve, reject) => {
+            const checkSDK = () => {
+                if (window.frame?.sdk) {
                     resolve();
                 } else {
-                    setTimeout(checkProvider, 100);
+                    setTimeout(checkSDK, 100);
                 }
-              };
-              checkProvider();
-            });
+            };
+            setTimeout(() => reject(new Error('Frame SDK initialization timeout')), 10000);
+            checkSDK();
+          });
 
-            console.log('Provider loaded');
+          console.log('Frame SDK initialized');
+          debugContainer.innerHTML = debugContainer.innerHTML + `<p>Frame SDK initialized</p>`;
 
-            // Switch to Base
-            // try {
-            //   await window.frame.sdk.wallet.ethProvider.request({
-            //       method: 'wallet_switchEthereumChain',
-            //       params: [{ chainId: '0x2105' }] // Base mainnet chainId
-            //   });
-            //   console.log('Successfully switched to Base');
-            // } catch (switchError) {
-            //   return
-            // }
+          // Initialize Frame SDK
+          if (window.frame?.sdk?.actions?.ready) {
+            await window.frame.sdk.actions.ready();
+            console.log('Frame SDK ready');
+          }
 
-            // console.log('Successfully switched to Base');
-
-            document.getElementById('shareButton').addEventListener('click', async () => {
-              const shareText = `I've been classified as a $FLUX Drifter in the Spectral Lab! Discover your research alignment below.`;
-
-              const encodedText = encodeURI(shareText);
-              const encodedAppUrl = encodeURIComponent(`https://spec0222.vercel.app/?fid=977233`);
-
-              const shareUrl = `https://warpcast.com/~/compose?text=${encodedText}&embeds[]=${encodedAppUrl}`;
-
-              window.frame.sdk.actions.openUrl(shareUrl);
-            });
-
-            // add an event listener for the mint button
-            document.getElementById('mintButton').addEventListener('click', async () => {
-              console.log('Mint button clicked');
-              
-              const statusDisplay = document.getElementById('statusDisplay');
-              statusDisplay.style.display = 'none';
-
-              const contractAddress = '0xc206ec89796Ef809Ca2232F63C5fc8A11a080a7E';
-              
-              try {
-                // Get the user's wallet address
-                const accounts = await window.frame.sdk.wallet.ethProvider.request({
-                  method: 'eth_requestAccounts'
-                });
-                const walletAddress = accounts[0];
-
-                // Create the mint function signature
-                const mintFunctionSignature = '0x1249c58b'; // This is keccak256('mint()')
-
-                // Send the transaction
-                const txHash = await window.frame.sdk.wallet.ethProvider.request({
-                  method: 'eth_sendTransaction',
-                  params: [{
-                    from: walletAddress,
-                    to: contractAddress,
-                    data: mintFunctionSignature
-                  }]
-                });
-
-                console.log('Mint transaction sent:', txHash);
-                statusDisplay.style.backgroundColor = '#4CAF50';
-                statusDisplay.style.color = 'white';
-                statusDisplay.innerHTML = `Transaction sent! Hash: <a href="https://basescan.org/tx/${txHash}" target="_blank" style="color: white;">${txHash.slice(0,10)}...${txHash.slice(-8)}</a>`;
-                statusDisplay.style.display = 'block';
-              } catch (error) {
-                console.error('Error minting:', error);
-                statusDisplay.style.backgroundColor = '#f44336';
-                statusDisplay.style.color = 'white';
-                statusDisplay.textContent = `Error: ${error.message || 'Failed to mint'}`;
-                statusDisplay.style.display = 'block';
+          console.log('Frame SDK ready');
+          debugContainer.innerHTML = debugContainer.innerHTML + `<p>Frame SDK ready</p>`;
+          // Wait for user context
+          const user = await new Promise((resolve, reject) => {
+            const checkUser = () => {
+              if (window.frame?.sdk?.context?.user) {
+                  resolve(window.frame.sdk.context.user);
+              } else {
+                  setTimeout(checkUser, 100);
               }
+            };
+            setTimeout(() => reject(new Error('User context timeout')), 10000);
+            checkUser();
+          });
+
+          console.log('User context loaded');
+          debugContainer.innerHTML = debugContainer.innerHTML + `<p>User context loaded</p>`;
+
+          // Store user info and update panel
+          window.userFid = user.fid;
+          window.userName = user.username || 'Anonymous';
+          console.log('User Info:', { fid: window.userFid, username: window.userName });
+          debugContainer.innerHTML = debugContainer.innerHTML + `<p>User Info: ${window.userFid}, ${window.userName}</p>`;
+
+          // Wait for provider to be available
+          await new Promise(resolve => {
+            const checkProvider = () => {
+              if (window.frame.sdk.wallet.ethProvider) {
+                  resolve();
+              } else {
+                  setTimeout(checkProvider, 100);
+              }
+            };
+            checkProvider();
+          });
+
+          console.log('Provider loaded');
+          debugContainer.innerHTML = debugContainer.innerHTML + `<p>Provider loaded</p>`;
+          // Switch to Base
+          try {
+            await window.frame.sdk.wallet.ethProvider.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: '0x2105' }] // Base mainnet chainId
             });
+            console.log('Successfully switched to Base');
+          } catch (switchError) {
+            return
+          }
+
+          console.log('Successfully switched to Base');
+          debugContainer.innerHTML = debugContainer.innerHTML + `<p>Successfully switched to Base</p>`;
+
+          // add an event listener for the login button
+          document.getElementById('loginButton').addEventListener('click', async () => {
+            const nonce = 'test1234'
+            const signInResults = await window.frame.sdk.actions.signIn({ nonce });
+            console.log('Sign in results:', signInResults);
+            debugContainer.innerHTML = debugContainer.innerHTML + `<p>Sign in results: ${JSON.stringify(signInResults)}</p>`;
+          });
+
+          // add an event listener for the mint button
+          document.getElementById('mintButton').addEventListener('click', async () => {
+            console.log('Mint button clicked');
+            
+            const statusDisplay = document.getElementById('statusDisplay');
+            statusDisplay.style.display = 'none';
+
+            const contractAddress = '0xc206ec89796Ef809Ca2232F63C5fc8A11a080a7E';
+            
+            try {
+              // Get the user's wallet address
+              const accounts = await window.frame.sdk.wallet.ethProvider.request({
+                method: 'eth_requestAccounts'
+              });
+              const walletAddress = accounts[0];
+
+              // Create the mint function signature
+              const mintFunctionSignature = '0x1249c58b'; // This is keccak256('mint()')
+
+              // Send the transaction
+              const txHash = await window.frame.sdk.wallet.ethProvider.request({
+                method: 'eth_sendTransaction',
+                params: [{
+                  from: walletAddress,
+                  to: contractAddress,
+                  data: mintFunctionSignature
+                }]
+              });
+
+              console.log('Mint transaction sent:', txHash);
+              statusDisplay.style.backgroundColor = '#4CAF50';
+              statusDisplay.style.color = 'white';
+              statusDisplay.innerHTML = `Transaction sent! Hash: <a href="https://basescan.org/tx/${txHash}" target="_blank" style="color: white;">${txHash.slice(0,10)}...${txHash.slice(-8)}</a>`;
+              statusDisplay.style.display = 'block';
+            } catch (error) {
+              console.error('Error minting:', error);
+              statusDisplay.style.backgroundColor = '#f44336';
+              statusDisplay.style.color = 'white';
+              statusDisplay.textContent = `Error: ${error.message || 'Failed to mint'}`;
+              statusDisplay.style.display = 'block';
+            }
+          });
         } catch (error) {
           console.error('Error:', error);
         }

@@ -1,0 +1,17 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjk3NzIzMywidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweGE2N0JhMDI4MTIzMWVCOUUyZWE0Y0Y5Nzg5NGMwYjBiNUI4MDFDYzYifQ",
+    "payload": "eyJkb21haW4iOiJrYXNyYS1uZnQtdGVzdC5rYXNyYS5jb2RlcyJ9",
+    "signature": "MHhiYWI3NjZhZTA3NWZjYTU1YjliMDU5MTVjZWUzZWE4YzRlNTI5NDA3NzU3YjA3NzhjZTY2NGI5MzBmODAzYmM5MThmZDlkZmJiNzg1YzYzOGI5OTVlYTEyOWQxNmE3NWUyYzA5ZDJhYTg4Y2IyOGVlOTRiMzA3MzUzNWMxYmNlNjFi"
+  },
+  "frame": {
+    "version": "1",
+    "name": "Kasra NFT test",
+    "iconUrl": "https://i.seadn.io/gae/2cLE8IkDQG0iGaedeE4KvY4zIPvDPEw47oyOhR6uzIAudFMWKP0i-c0trrIBFI0s8veuzPICebd0_S-8DDulZvgUbgwLC3n8zpt6Fw?auto=format&dpr=1&w=384",
+    "homeUrl": "https://kasra-nft-test.kasra.codes",
+    "imageUrl": "https://i.seadn.io/gae/2cLE8IkDQG0iGaedeE4KvY4zIPvDPEw47oyOhR6uzIAudFMWKP0i-c0trrIBFI0s8veuzPICebd0_S-8DDulZvgUbgwLC3n8zpt6Fw?auto=format&dpr=1&w=384",
+    "buttonTitle": "Check this out",
+    "splashImageUrl": "https://i.seadn.io/gae/2cLE8IkDQG0iGaedeE4KvY4zIPvDPEw47oyOhR6uzIAudFMWKP0i-c0trrIBFI0s8veuzPICebd0_S-8DDulZvgUbgwLC3n8zpt6Fw?auto=format&dpr=1&w=384",
+    "splashBackgroundColor": "#D9D9D6"
+  }
+}

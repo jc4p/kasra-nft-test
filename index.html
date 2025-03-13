@@ -71,7 +71,7 @@
         try {
           const debugContainer = document.querySelector('.debug-container');
           console.log('DOMContentLoaded');
-          debugContainer.innerHTML = debugContainer.innerHTML + `<p>DOMContentLoaded</p>`;
+
           // Wait for Frame SDK initialization
           await new Promise((resolve, reject) => {
             const checkSDK = () => {
@@ -95,7 +95,7 @@
           }
 
           console.log('Frame SDK ready');
-          debugContainer.innerHTML = debugContainer.innerHTML + `<p>Frame SDK ready</p>`;
+          debugContainer.innerHTML = debugContainer.innerHTML + `<p>Called sdk.actions.ready()</p>`;
           // Wait for user context
           const user = await new Promise((resolve, reject) => {
             const checkUser = () => {

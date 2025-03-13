@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kasra NFT Test</title>
     <script src="https://cdn.jsdelivr.net/npm/@farcaster/frame-sdk/dist/index.min.js"></script>
-    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://i.seadn.io/gae/2cLE8IkDQG0iGaedeE4KvY4zIPvDPEw47oyOhR6uzIAudFMWKP0i-c0trrIBFI0s8veuzPICebd0_S-8DDulZvgUbgwLC3n8zpt6Fw?auto=format&dpr=1&w=384","button":{"title":"Play Game","action":{"type":"launch_frame","name":"Bounce Game","url":"https://kasra-nft-test.kasra.codes","splashImageUrl":"https://i.seadn.io/gae/2cLE8IkDQG0iGaedeE4KvY4zIPvDPEw47oyOhR6uzIAudFMWKP0i-c0trrIBFI0s8veuzPICebd0_S-8DDulZvgUbgwLC3n8zpt6Fw?auto=format&dpr=1&w=384","splashBackgroundColor":"#D9D9D6"}}}' />
+    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://i.seadn.io/gae/2cLE8IkDQG0iGaedeE4KvY4zIPvDPEw47oyOhR6uzIAudFMWKP0i-c0trrIBFI0s8veuzPICebd0_S-8DDulZvgUbgwLC3n8zpt6Fw?auto=format&dpr=1&w=384","button":{"title":"Test Frame Interactions","action":{"type":"launch_frame","name":"Kasra NFT Test","url":"https://kasra-nft-test.kasra.codes","splashImageUrl":"https://i.seadn.io/gae/2cLE8IkDQG0iGaedeE4KvY4zIPvDPEw47oyOhR6uzIAudFMWKP0i-c0trrIBFI0s8veuzPICebd0_S-8DDulZvgUbgwLC3n8zpt6Fw?auto=format&dpr=1&w=384","splashBackgroundColor":"#D9D9D6"}}}' />
     <style>
         body {
             display: flex;
@@ -143,8 +143,10 @@
             const signInResults = await window.frame.sdk.actions.signIn({ nonce });
             console.log('Sign in results:', signInResults);
             let results = `<p>Sign in results:</p>`
+            results += '<p>Keys in signInResults:' + Object.keys(signInResults).join(', ') + '</p>'
             results += `<p>Signature: ${signInResults.signature}</p>`
             results += `<p>Message: ${signInResults.message}</p>`
+            results += `<p>Nonce: ${signInResults.nonce}</p>`
             debugContainer.innerHTML = debugContainer.innerHTML + results;
           });
 

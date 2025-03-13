@@ -96,28 +96,12 @@
 
           console.log('Frame SDK ready');
           debugContainer.innerHTML = debugContainer.innerHTML + `<p>Called sdk.actions.ready()</p>`;
-          // Wait for user context
-          const user = await new Promise((resolve, reject) => {
-            const checkUser = () => {
-              if (window.frame?.sdk?.context?.user) {
-                  resolve(window.frame.sdk.context.user);
-              } else {
-                  setTimeout(checkUser, 100);
-              }
-            };
-            setTimeout(() => reject(new Error('User context timeout')), 10000);
-            checkUser();
-          });
 
+          const user = await window.frame.sdk.context.user;
           console.log('User context loaded');
           debugContainer.innerHTML = debugContainer.innerHTML + `<p>User context loaded</p>`;
 
           console.log('User:', user);
-
-          // Store user info and update panel
-          window.userFid = user.fid;
-          window.userName = user.username || 'Anonymous';
-          console.log('User Info:', { fid: window.userFid, username: window.userName });
           debugContainer.innerHTML = debugContainer.innerHTML + `<p>User Info: ${JSON.stringify(user)}</p>`
 
           // Wait for provider to be available
@@ -134,6 +118,7 @@
 
           console.log('Provider loaded');
           debugContainer.innerHTML = debugContainer.innerHTML + `<p>Provider loaded</p>`;
+
           // Switch to Base
           try {
             await window.frame.sdk.wallet.ethProvider.request({

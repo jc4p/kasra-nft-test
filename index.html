@@ -37,7 +37,10 @@
             background-color: #4CAF50;
             color: white;
             border: none;
+            border-radius: 5px;
             margin-top: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         .login-button:hover {
@@ -139,7 +142,10 @@
             const nonce = 'test1234'
             const signInResults = await window.frame.sdk.actions.signIn({ nonce });
             console.log('Sign in results:', signInResults);
-            debugContainer.innerHTML = debugContainer.innerHTML + `<p>Sign in results: ${JSON.stringify(signInResults)}</p>`;
+            let results = `<p>Sign in results:</p>`
+            results += `<p>Signature: ${signInResults.signature}</p>`
+            results += `<p>Message: ${signInResults.message}</p>`
+            debugContainer.innerHTML = debugContainer.innerHTML + results;
           });
 
           // add an event listener for the mint button

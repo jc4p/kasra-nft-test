@@ -111,11 +111,13 @@
           console.log('User context loaded');
           debugContainer.innerHTML = debugContainer.innerHTML + `<p>User context loaded</p>`;
 
+          console.log('User:', user);
+
           // Store user info and update panel
           window.userFid = user.fid;
           window.userName = user.username || 'Anonymous';
           console.log('User Info:', { fid: window.userFid, username: window.userName });
-          debugContainer.innerHTML = debugContainer.innerHTML + `<p>User Info: ${window.userFid}, ${window.userName}</p>`;
+          debugContainer.innerHTML = debugContainer.innerHTML + `<p>User Info: ${JSON.stringify(user)}</p>`
 
           // Wait for provider to be available
           await new Promise(resolve => {
